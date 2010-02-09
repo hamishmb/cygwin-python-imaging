@@ -5,24 +5,23 @@ DESCRIPTION="Python Imaging Library"
 HOMEPAGE="http://www.pythonware.com/products/pil/"
 SRC_URI="http://effbot.org/downloads/${ORIG_PN}-${PV}.tar.gz"
 
-src_compile() {
-	lndirs
-	cd ${B}
-	distutils_compile
+PATCH_URI="
+	mirror://portage/dev-python/imaging/files/imaging-1.1.7-giftrans.patch
+	mirror://portage/dev-python/imaging/files/imaging-1.1.7-no-xv.patch
+"
 
-	cd ${B}/Sane
-	distutils_compile
+src_test() {
+	cd ${B}
+	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|(.*||')-$(uname -m)-${PYTHON_VERSION}" \
+	${PYTHON} selftest.py
 }
 
 src_install() {
 	cd ${B}
 	distutils_install
 
+	# required by sketch
 	insinto ${PYTHON_INCLUDEDIR}
 	doins libImaging/Imaging.h
 	doins libImaging/ImPlatform.h
-
-	cd ${B}/Sane
-	distutils_install
-	dodoc sanedoc.txt	
 }
