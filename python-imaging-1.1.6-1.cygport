@@ -1,0 +1,28 @@
+ORIG_PN="Imaging"
+inherit distutils
+
+DESCRIPTION="Python Imaging Library"
+HOMEPAGE="http://www.pythonware.com/products/pil/"
+SRC_URI="http://effbot.org/downloads/${ORIG_PN}-${PV}.tar.gz"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	distutils_compile
+
+	cd ${B}/Sane
+	distutils_compile
+}
+
+src_install() {
+	cd ${B}
+	distutils_install
+
+	insinto ${PYTHON_INCLUDEDIR}
+	doins libImaging/Imaging.h
+	doins libImaging/ImPlatform.h
+
+	cd ${B}/Sane
+	distutils_install
+	dodoc sanedoc.txt	
+}
