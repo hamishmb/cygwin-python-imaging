@@ -1,7 +1,14 @@
 ORIG_PN="Imaging"
 inherit distutils
 
-DESCRIPTION="Python Imaging Library"
+NAME="python-imaging"
+VERSION=1.1.7
+RELEASE=5
+CATEGORY="Graphics Python"
+SUMMARY="Python Imaging Library"
+DESCRIPTION="The Python Imaging Library (PIL) adds image processing capabilities
+to your Python interpreter. This library supports many file formats, and provides
+powerful image processing and graphics capabilities."
 HOMEPAGE="http://www.pythonware.com/products/pil/"
 SRC_URI="http://effbot.org/downloads/${ORIG_PN}-${PV}.tar.gz"
 

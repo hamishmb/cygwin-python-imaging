@@ -1,7 +1,0 @@
-category: Graphics Python
-requires: libfreetype6 libjpeg8 liblcms1 python python-tkinter tcl tcl-tk zlib0
-sdesc: "Python Imaging Library"
-ldesc: "The Python Imaging Library (PIL) adds image processing 
-capabilities to your Python interpreter. This library supports many 
-file formats, and provides powerful image processing and graphics 
-capabilities."
