@@ -1,25 +1,20 @@
-ORIG_PN="Imaging"
+ORIG_PN="Pillow"
 inherit distutils
 
 NAME="python-imaging"
-VERSION=1.1.7
-RELEASE=5
-CATEGORY="Graphics Python"
+VERSION=2.6.1
+RELEASE=1
+CATEGORY="Python"
 SUMMARY="Python Imaging Library"
 DESCRIPTION="The Python Imaging Library (PIL) adds image processing capabilities
 to your Python interpreter. This library supports many file formats, and provides
 powerful image processing and graphics capabilities."
-HOMEPAGE="http://www.pythonware.com/products/pil/"
-SRC_URI="http://effbot.org/downloads/${ORIG_PN}-${PV}.tar.gz"
-
-PATCH_URI="
-	mirror://portage/dev-python/imaging/files/imaging-1.1.7-giftrans.patch
-	mirror://portage/dev-python/imaging/files/imaging-1.1.7-no-xv.patch
-"
+HOMEPAGE="https://python-pillow.github.io/"
 
 src_test() {
 	cd ${B}
-	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|(.*||')-$(uname -m)-${PYTHON_VERSION}" \
+	echo PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON_VERSION}/PIL"
+	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON_VERSION}/PIL" \
 	${PYTHON} selftest.py
 }
 
@@ -28,7 +23,9 @@ src_install() {
 	distutils_install
 
 	# required by sketch
-	insinto ${PYTHON_INCLUDEDIR}
-	doins libImaging/Imaging.h
-	doins libImaging/ImPlatform.h
+#	insinto ${PYTHON_INCLUDEDIR}
+#	doins libImaging/Imaging.h
+#	doins libImaging/ImPlatform.h
 }
+
+DOCS="CHANGES.rst README.rst"
