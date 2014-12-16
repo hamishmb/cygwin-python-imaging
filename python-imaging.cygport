@@ -23,9 +23,14 @@ src_install() {
 	distutils_install
 
 	# required by sketch
-#	insinto ${PYTHON_INCLUDEDIR}
-#	doins libImaging/Imaging.h
-#	doins libImaging/ImPlatform.h
+	insinto ${PYTHON_INCLUDEDIR}/Imaging
+	doins libImaging/*.h
 }
 
-DOCS="CHANGES.rst README.rst"
+PKG_NAMES="${NAME} ${NAME}-devel ${NAME}-qt ${NAME}-tk"
+python_imaging_DOCS="CHANGES.rst README.rst"
+python_imaging_CONTENTS="--exclude=_imagingtk* --exclude=ImageQt* --exclude=ImageTk* --exclude=SpiderImagePlugin* usr/bin/ ${PYTHON_SITELIB#/}"
+python_imaging_devel_REQUIRES=${NAME}
+python_imaging_devel_CONTENTS="${PYTHON_INCLUDEDIR#/}/Imaging/"
+python_imaging_qt_CONTENTS="${PYTHON_SITELIB#/}/PIL/ImageQt*"
+python_imaging_tk_CONTENTS="${PYTHON_SITELIB#/}/PIL/_imagingtk* ${PYTHON_SITELIB#/}/PIL/ImageTk* ${PYTHON_SITELIB#/}/PIL/SpiderImagePlugin*"
