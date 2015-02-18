@@ -2,7 +2,7 @@ ORIG_PN="Pillow"
 inherit distutils
 
 NAME="python-imaging"
-VERSION=2.6.1
+VERSION=2.7.0
 RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
