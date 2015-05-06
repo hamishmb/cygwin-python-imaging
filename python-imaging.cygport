@@ -20,7 +20,7 @@ src_test() {
 
 src_install() {
 	cd ${B}
-	distutils_install
+	python_distutils_install
 
 	# required by sketch
 	insinto ${PYTHON_INCLUDEDIR}/Imaging
