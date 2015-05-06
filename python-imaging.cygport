@@ -1,8 +1,8 @@
 ORIG_PN="Pillow"
-inherit distutils
+inherit python-distutils
 
 NAME="python-imaging"
-VERSION=2.7.0
+VERSION=2.8.1
 RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
@@ -28,7 +28,7 @@ src_install() {
 }
 
 PKG_NAMES="${NAME} ${NAME}-devel ${NAME}-qt ${NAME}-tk"
-python_imaging_DOCS="CHANGES.rst README.rst"
+python_imaging_DOCS="CHANGES.rst LICENSE README.rst"
 python_imaging_CONTENTS="--exclude=_imagingtk* --exclude=ImageQt* --exclude=ImageTk* --exclude=SpiderImagePlugin* usr/bin/ ${PYTHON_SITELIB#/}"
 python_imaging_devel_REQUIRES=${NAME}
 python_imaging_devel_CONTENTS="${PYTHON_INCLUDEDIR#/}/Imaging/"
