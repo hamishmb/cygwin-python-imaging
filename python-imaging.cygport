@@ -3,7 +3,7 @@ inherit python-distutils
 
 NAME="python-imaging"
 VERSION=2.8.2
-RELEASE=1
+RELEASE=2
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
 DESCRIPTION="The Python Imaging Library (PIL) adds image processing capabilities
@@ -17,6 +17,7 @@ PATCH_URI="
 	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/5bdf54b5a76b54fb00bd05f2d733e0a4173eefc9.patch?h=f22
 	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/6dcbf5bd96b717c58d7b642949da8d323099928e.patch?h=f22
 	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/bcaaf97f4ff25b3b5b9e8efeda364e17e80858ec.patch?h=f22
+	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/a1f244343df389cf15cdfff80327594821097295.patch?h=f22
 "
 
 src_test() {
