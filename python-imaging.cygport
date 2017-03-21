@@ -1,9 +1,9 @@
 ORIG_PN="Pillow"
-inherit python-distutils
+inherit python-wheel
 
 NAME="python-imaging"
-VERSION=2.8.2
-RELEASE=2
+VERSION=3.4.2
+RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
 DESCRIPTION="The Python Imaging Library (PIL) adds image processing capabilities
@@ -11,35 +11,70 @@ to your Python interpreter. This library supports many file formats, and provide
 powerful image processing and graphics capabilities."
 HOMEPAGE="https://python-pillow.github.io/"
 
-PATCH_URI="
-	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/28fd74742bd03647a5f772a508ef17f6cd8c2bf4.patch?h=f22
-	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/41fae6d9e2da741d2c5464775c7f1a609ea03798.patch?h=f22
-	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/5bdf54b5a76b54fb00bd05f2d733e0a4173eefc9.patch?h=f22
-	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/6dcbf5bd96b717c58d7b642949da8d323099928e.patch?h=f22
-	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/bcaaf97f4ff25b3b5b9e8efeda364e17e80858ec.patch?h=f22
-	http://pkgs.fedoraproject.org/cgit/rpms/python-pillow.git/plain/a1f244343df389cf15cdfff80327594821097295.patch?h=f22
-"
-
 src_test() {
 	cd ${B}
-	echo PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON_VERSION}/PIL"
-	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON_VERSION}/PIL" \
-	${PYTHON} selftest.py
+	echo PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON2_VERSION}/PIL"
+	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON2_VERSION}/PIL" \
+	${PYTHON2} selftest.py
+	echo PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON3_VERSION}/PIL"
+	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON3_VERSION}/PIL" \
+	${PYTHON3} selftest.py
 }
 
 src_install() {
 	cd ${B}
-	python_distutils_install
+	python_wheel_install
 
 	# required by sketch
-	insinto ${PYTHON_INCLUDEDIR}/Imaging
+	insinto ${PYTHON2_INCLUDEDIR}/Imaging
+	doins libImaging/*.h
+	insinto ${PYTHON3_INCLUDEDIR}/Imaging
 	doins libImaging/*.h
 }
 
-PKG_NAMES="${NAME} ${NAME}-devel ${NAME}-qt ${NAME}-tk"
-python_imaging_DOCS="CHANGES.rst LICENSE README.rst"
-python_imaging_CONTENTS="--exclude=_imagingtk* --exclude=ImageQt* --exclude=ImageTk* --exclude=SpiderImagePlugin* usr/bin/ ${PYTHON_SITELIB#/}"
-python_imaging_devel_REQUIRES=${NAME}
-python_imaging_devel_CONTENTS="${PYTHON_INCLUDEDIR#/}/Imaging/"
-python_imaging_qt_CONTENTS="${PYTHON_SITELIB#/}/PIL/ImageQt*"
-python_imaging_tk_CONTENTS="${PYTHON_SITELIB#/}/PIL/_imagingtk* ${PYTHON_SITELIB#/}/PIL/ImageTk* ${PYTHON_SITELIB#/}/PIL/SpiderImagePlugin*"
+PKG_NAMES="python2-imaging python2-imaging-devel python2-imaging-qt python2-imaging-tk"
+PKG_NAMES+=" python3-imaging python3-imaging-devel python3-imaging-qt python3-imaging-tk"
+python2_imaging_DOCS="CHANGES.rst LICENSE README.rst"
+python2_imaging_OBSOLETES="python-imaging"
+python2_imaging_CONTENTS="
+	--exclude=_imagingtk*
+	--exclude=ImageQt*
+	--exclude=ImageTk*
+	--exclude=SpiderImagePlugin*
+	${PYTHON2_SITELIB#/}
+"
+python2_imaging_devel_REQUIRES="python2-imaging"
+python2_imaging_devel_OBSOLETES="python-imaging-devel"
+python2_imaging_devel_CONTENTS="${PYTHON2_INCLUDEDIR#/}/Imaging/"
+python2_imaging_qt_OBSOLETES="python-imaging-qt"
+python2_imaging_qt_CONTENTS="${PYTHON2_SITELIB#/}/PIL/ImageQt*"
+python2_imaging_tk_OBSOLETES="python-imaging-tk"
+python2_imaging_tk_CONTENTS="
+	${PYTHON2_SITELIB#/}/PIL/_imagingtk*
+	${PYTHON2_SITELIB#/}/PIL/ImageTk*
+	${PYTHON2_SITELIB#/}/PIL/SpiderImagePlugin*
+"
+python3_imaging_DOCS="CHANGES.rst LICENSE README.rst"
+python3_imaging_CONTENTS="
+	--exclude=_imagingtk*
+	--exclude=ImageQt*
+	--exclude=ImageTk*
+	--exclude=SpiderImagePlugin*
+	usr/bin/
+	${PYTHON3_SITELIB#/}
+"
+python3_imaging_devel_REQUIRES="python3-imaging"
+python3_imaging_devel_CONTENTS="${PYTHON3_INCLUDEDIR#/}/Imaging/"
+python3_imaging_qt_CONTENTS="
+	${PYTHON3_SITELIB#/}/PIL/ImageQt*
+	${PYTHON3_SITELIB#/}/PIL/__pycache__/ImageQt*
+"
+python3_imaging_tk_CONTENTS="
+	${PYTHON3_SITELIB#/}/PIL/_imagingtk*
+	${PYTHON3_SITELIB#/}/PIL/ImageTk*
+	${PYTHON3_SITELIB#/}/PIL/SpiderImagePlugin*
+	${PYTHON3_SITELIB#/}/PIL/__pycache__/ImageTk*
+	${PYTHON3_SITELIB#/}/PIL/__pycache__/SpiderImagePlugin*
+"
+
+RESTRICT="postinst-doc"
