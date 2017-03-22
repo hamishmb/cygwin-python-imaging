@@ -76,5 +76,6 @@ python3_imaging_tk_CONTENTS="
 	${PYTHON3_SITELIB#/}/PIL/__pycache__/ImageTk*
 	${PYTHON3_SITELIB#/}/PIL/__pycache__/SpiderImagePlugin*
 "
+python_imaging_debuginfo_OBSOLETES="python3-imaging-debuginfo"
 
 RESTRICT="postinst-doc"
