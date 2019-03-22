@@ -2,7 +2,7 @@ ORIG_PN="Pillow"
 inherit python-wheel
 
 NAME="python-imaging"
-VERSION=4.1.1
+VERSION=5.4.1
 RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
@@ -13,69 +13,63 @@ HOMEPAGE="https://python-pillow.github.io/"
 
 src_test() {
 	cd ${B}
-	echo PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON2_VERSION}/PIL"
-	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON2_VERSION}/PIL" \
-	${PYTHON2} selftest.py
-	echo PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON3_VERSION}/PIL"
-	PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-${PYTHON3_VERSION}/PIL" \
-	${PYTHON3} selftest.py
+	for v in ${PYTHON_WHEEL_VERSIONS//:/ }
+	do
+		echo PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-$v"
+		PYTHONPATH="${B}/build/lib.cygwin-$(uname -r | sed -e 's|s*(.*||')-$(uname -m)-$v" \
+		python$v selftest.py
+	done
 }
 
-src_install() {
-	cd ${B}
-	python_wheel_install
-
-	# required by sketch
-	insinto ${PYTHON2_INCLUDEDIR}/Imaging
-	doins libImaging/*.h
-	insinto ${PYTHON3_INCLUDEDIR}/Imaging
-	doins libImaging/*.h
-}
-
-PKG_NAMES="python2-imaging python2-imaging-devel python2-imaging-qt python2-imaging-tk"
-PKG_NAMES+=" python3-imaging python3-imaging-devel python3-imaging-qt python3-imaging-tk"
-python2_imaging_DOCS="CHANGES.rst LICENSE README.rst"
-python2_imaging_OBSOLETES="python-imaging"
-python2_imaging_CONTENTS="
+PKG_NAMES="python27-imaging python27-imaging-tk"
+PKG_NAMES+=" python36-imaging python36-imaging-tk"
+PKG_NAMES+=" python37-imaging python37-imaging-tk"
+# ImageQt no longer imports PyQt or PySide, but simply integrates with
+# whatever has already been imported.  Therefore there is no need to
+# break it out separately, as it has no hard dependencies of its own.
+python27_imaging_OBSOLETES+=" python2-imaging-devel python2-imaging-qt"
+python27_imaging_CONTENTS="
 	--exclude=_imagingtk*
-	--exclude=ImageQt*
 	--exclude=ImageTk*
 	--exclude=SpiderImagePlugin*
-	${PYTHON2_SITELIB#/}
+	${python27_imaging_CONTENTS}
 "
-python2_imaging_devel_REQUIRES="python2-imaging"
-python2_imaging_devel_OBSOLETES="python-imaging-devel"
-python2_imaging_devel_CONTENTS="${PYTHON2_INCLUDEDIR#/}/Imaging/"
-python2_imaging_qt_OBSOLETES="python-imaging-qt"
-python2_imaging_qt_CONTENTS="${PYTHON2_SITELIB#/}/PIL/ImageQt*"
-python2_imaging_tk_OBSOLETES="python-imaging-tk"
-python2_imaging_tk_CONTENTS="
-	${PYTHON2_SITELIB#/}/PIL/_imagingtk*
-	${PYTHON2_SITELIB#/}/PIL/ImageTk*
-	${PYTHON2_SITELIB#/}/PIL/SpiderImagePlugin*
+python27_imaging_tk_OBSOLETES="python-imaging-tk python2-imaging-tk"
+python27_imaging_tk_REQUIRES="python27-tkinter"
+python27_imaging_tk_CONTENTS="
+	usr/lib/python2.7/site-packages/PIL/_imagingtk*
+	usr/lib/python2.7/site-packages/PIL/ImageTk*
+	usr/lib/python2.7/site-packages/PIL/SpiderImagePlugin*
 "
-python3_imaging_DOCS="CHANGES.rst LICENSE README.rst"
-python3_imaging_CONTENTS="
+python36_imaging_OBSOLETES+=" python3-imaging-devel python3-imaging-qt"
+python36_imaging_CONTENTS="
 	--exclude=_imagingtk*
-	--exclude=ImageQt*
 	--exclude=ImageTk*
 	--exclude=SpiderImagePlugin*
-	usr/bin/
-	${PYTHON3_SITELIB#/}
+	${python36_imaging_CONTENTS}
 "
-python3_imaging_devel_REQUIRES="python3-imaging"
-python3_imaging_devel_CONTENTS="${PYTHON3_INCLUDEDIR#/}/Imaging/"
-python3_imaging_qt_CONTENTS="
-	${PYTHON3_SITELIB#/}/PIL/ImageQt*
-	${PYTHON3_SITELIB#/}/PIL/__pycache__/ImageQt*
+python36_imaging_tk_OBSOLETES="python3-imaging-tk"
+python36_imaging_tk_REQUIRES="python36-tkinter"
+python36_imaging_tk_CONTENTS="
+	usr/lib/python3.6/site-packages/PIL/_imagingtk*
+	usr/lib/python3.6/site-packages/PIL/ImageTk*
+	usr/lib/python3.6/site-packages/PIL/SpiderImagePlugin*
+	usr/lib/python3.6/site-packages/PIL/__pycache__/ImageTk*
+	usr/lib/python3.6/site-packages/PIL/__pycache__/SpiderImagePlugin*
 "
-python3_imaging_tk_CONTENTS="
-	${PYTHON3_SITELIB#/}/PIL/_imagingtk*
-	${PYTHON3_SITELIB#/}/PIL/ImageTk*
-	${PYTHON3_SITELIB#/}/PIL/SpiderImagePlugin*
-	${PYTHON3_SITELIB#/}/PIL/__pycache__/ImageTk*
-	${PYTHON3_SITELIB#/}/PIL/__pycache__/SpiderImagePlugin*
+python37_imaging_CONTENTS="
+	--exclude=_imagingtk*
+	--exclude=ImageTk*
+	--exclude=SpiderImagePlugin*
+	${python37_imaging_CONTENTS}
+"
+python37_imaging_tk_REQUIRES="python37-tkinter"
+python37_imaging_tk_CONTENTS="
+	usr/lib/python3.7/site-packages/PIL/_imagingtk*
+	usr/lib/python3.7/site-packages/PIL/ImageTk*
+	usr/lib/python3.7/site-packages/PIL/SpiderImagePlugin*
+	usr/lib/python3.7/site-packages/PIL/__pycache__/ImageTk*
+	usr/lib/python3.7/site-packages/PIL/__pycache__/SpiderImagePlugin*
 "
 python_imaging_debuginfo_OBSOLETES="python3-imaging-debuginfo"
-
-RESTRICT="postinst-doc"
+PKG_IGNORE="usr/share/doc/python*-imaging-*/"
