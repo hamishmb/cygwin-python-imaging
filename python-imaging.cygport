@@ -1,8 +1,9 @@
 ORIG_PN="Pillow"
+PYTHON_WHEEL_VERSIONS="3.6:3.7:3.8"
 inherit python-wheel
 
 NAME="python-imaging"
-VERSION=5.4.1
+VERSION=7.2.0
 RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
@@ -10,6 +11,14 @@ DESCRIPTION="The Python Imaging Library (PIL) adds image processing capabilities
 to your Python interpreter. This library supports many file formats, and provides
 powerful image processing and graphics capabilities."
 HOMEPAGE="https://python-pillow.github.io/"
+
+SRC_URI="https://files.pythonhosted.org/packages/3e/02/b09732ca4b14405ff159c470a612979acfc6e8645dc32f83ea0129709f7a/Pillow-7.2.0.tar.gz"
+SRC_DIR="Pillow-${VERSION}"
+PATCH_URI=""
+
+BUILD_REQUIRES="libjpeg-devel libjpeg8 zlib-devel zlib0 libtiff-devel libtiff6 libfreetype-devel libfreetype6 liblcms2-devel lcms2 libwebp libwebp-devel tcl-devel tcl libimagequant-devel libimagequant0 libraqm-devel libraqm0 libX11-xcb-devel libX11-xcb1 libxcb-devel libxcb1 python36 python36-devel python36-setuptools python36-wheel python36-pip python36-olefile python37 python37-devel python37-setuptools python37-wheel python37-pip python37-olefile python38 python38-devel python38-setuptools python38-wheel python38-pip python38-olefile"
+
+DIFF_EXCLUDES="build"
 
 src_test() {
 	cd ${B}
@@ -21,26 +30,14 @@ src_test() {
 	done
 }
 
-PKG_NAMES="python27-imaging python27-imaging-tk"
-PKG_NAMES+=" python36-imaging python36-imaging-tk"
+PKG_NAMES=" python36-imaging python36-imaging-tk"
 PKG_NAMES+=" python37-imaging python37-imaging-tk"
+PKG_NAMES+=" python38-imaging python38-imaging-tk"
+
 # ImageQt no longer imports PyQt or PySide, but simply integrates with
 # whatever has already been imported.  Therefore there is no need to
 # break it out separately, as it has no hard dependencies of its own.
-python27_imaging_OBSOLETES+=" python2-imaging-devel python2-imaging-qt"
-python27_imaging_CONTENTS="
-	--exclude=_imagingtk*
-	--exclude=ImageTk*
-	--exclude=SpiderImagePlugin*
-	${python27_imaging_CONTENTS}
-"
-python27_imaging_tk_OBSOLETES="python-imaging-tk python2-imaging-tk"
-python27_imaging_tk_REQUIRES="python27-tkinter"
-python27_imaging_tk_CONTENTS="
-	usr/lib/python2.7/site-packages/PIL/_imagingtk*
-	usr/lib/python2.7/site-packages/PIL/ImageTk*
-	usr/lib/python2.7/site-packages/PIL/SpiderImagePlugin*
-"
+python36_imaging_REQUIRES="python36 python36-olefile"
 python36_imaging_OBSOLETES+=" python3-imaging-devel python3-imaging-qt"
 python36_imaging_CONTENTS="
 	--exclude=_imagingtk*
@@ -49,7 +46,7 @@ python36_imaging_CONTENTS="
 	${python36_imaging_CONTENTS}
 "
 python36_imaging_tk_OBSOLETES="python3-imaging-tk"
-python36_imaging_tk_REQUIRES="python36-tkinter"
+python36_imaging_tk_REQUIRES="python36-imaging python36-tkinter"
 python36_imaging_tk_CONTENTS="
 	usr/lib/python3.6/site-packages/PIL/_imagingtk*
 	usr/lib/python3.6/site-packages/PIL/ImageTk*
@@ -57,19 +54,35 @@ python36_imaging_tk_CONTENTS="
 	usr/lib/python3.6/site-packages/PIL/__pycache__/ImageTk*
 	usr/lib/python3.6/site-packages/PIL/__pycache__/SpiderImagePlugin*
 "
+python37_imaging_REQUIRES="python37 python37-olefile"
 python37_imaging_CONTENTS="
 	--exclude=_imagingtk*
 	--exclude=ImageTk*
 	--exclude=SpiderImagePlugin*
 	${python37_imaging_CONTENTS}
 "
-python37_imaging_tk_REQUIRES="python37-tkinter"
+python37_imaging_tk_REQUIRES="python37-imaging python37-tkinter"
 python37_imaging_tk_CONTENTS="
 	usr/lib/python3.7/site-packages/PIL/_imagingtk*
 	usr/lib/python3.7/site-packages/PIL/ImageTk*
 	usr/lib/python3.7/site-packages/PIL/SpiderImagePlugin*
 	usr/lib/python3.7/site-packages/PIL/__pycache__/ImageTk*
 	usr/lib/python3.7/site-packages/PIL/__pycache__/SpiderImagePlugin*
+"
+python38_imaging_REQUIRES="python38 python38-olefile"
+python38_imaging_CONTENTS="
+	--exclude=_imagingtk*
+	--exclude=ImageTk*
+	--exclude=SpiderImagePlugin*
+	${python38_imaging_CONTENTS}
+"
+python38_imaging_tk_REQUIRES="python38-imaging python38-tkinter"
+python38_imaging_tk_CONTENTS="
+	usr/lib/python3.8/site-packages/PIL/_imagingtk*
+	usr/lib/python3.8/site-packages/PIL/ImageTk*
+	usr/lib/python3.8/site-packages/PIL/SpiderImagePlugin*
+	usr/lib/python3.8/site-packages/PIL/__pycache__/ImageTk*
+	usr/lib/python3.8/site-packages/PIL/__pycache__/SpiderImagePlugin*
 "
 python_imaging_debuginfo_OBSOLETES="python3-imaging-debuginfo"
 PKG_IGNORE="usr/share/doc/python*-imaging-*/"
