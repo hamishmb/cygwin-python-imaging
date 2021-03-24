@@ -3,7 +3,7 @@ PYTHON_WHEEL_VERSIONS="3.6:3.7:3.8"
 inherit python-wheel
 
 NAME="python-imaging"
-VERSION=7.2.0
+VERSION=8.1.2
 RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
@@ -12,7 +12,7 @@ to your Python interpreter. This library supports many file formats, and provide
 powerful image processing and graphics capabilities."
 HOMEPAGE="https://python-pillow.github.io/"
 
-SRC_URI="https://files.pythonhosted.org/packages/3e/02/b09732ca4b14405ff159c470a612979acfc6e8645dc32f83ea0129709f7a/Pillow-7.2.0.tar.gz"
+SRC_URI="https://files.pythonhosted.org/packages/60/f0/dd2eb7911f948bf529f58f0c7931f6f6466f711bd6f1d81a69dc4edd4e2a/Pillow-8.1.2.tar.gz"
 SRC_DIR="Pillow-${VERSION}"
 PATCH_URI=""
 
