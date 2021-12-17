@@ -1,9 +1,9 @@
 ORIG_PN="Pillow"
-PYTHON_WHEEL_VERSIONS="3.6:3.7:3.8"
+PYTHON_WHEEL_VERSIONS="3.6:3.7:3.8:3.9"
 inherit python-wheel
 
 NAME="python-imaging"
-VERSION=8.1.2
+VERSION=8.4.0
 RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python Imaging Library"
@@ -12,11 +12,11 @@ to your Python interpreter. This library supports many file formats, and provide
 powerful image processing and graphics capabilities."
 HOMEPAGE="https://python-pillow.github.io/"
 
-SRC_URI="https://files.pythonhosted.org/packages/60/f0/dd2eb7911f948bf529f58f0c7931f6f6466f711bd6f1d81a69dc4edd4e2a/Pillow-8.1.2.tar.gz"
+SRC_URI="https://files.pythonhosted.org/packages/7d/2a/2fc11b54e2742db06297f7fa7f420a0e3069fdcf0e4b57dfec33f0b08622/Pillow-8.4.0.tar.gz"
 SRC_DIR="Pillow-${VERSION}"
 PATCH_URI=""
 
-BUILD_REQUIRES="libjpeg-devel libjpeg8 zlib-devel zlib0 libtiff-devel libtiff6 libfreetype-devel libfreetype6 liblcms2-devel lcms2 libwebp libwebp-devel tcl-devel tcl libimagequant-devel libimagequant0 libraqm-devel libraqm0 libX11-xcb-devel libX11-xcb1 libxcb-devel libxcb1 python36 python36-devel python36-setuptools python36-wheel python36-pip python36-olefile python37 python37-devel python37-setuptools python37-wheel python37-pip python37-olefile python38 python38-devel python38-setuptools python38-wheel python38-pip python38-olefile"
+BUILD_REQUIRES="libjpeg-devel libjpeg8 zlib-devel zlib0 libtiff-devel libtiff6 libfreetype-devel libfreetype6 liblcms2-devel lcms2 libwebp libwebp-devel tcl-devel tcl libimagequant-devel libimagequant0 libraqm-devel libraqm0 libX11-xcb-devel libX11-xcb1 libxcb-devel libxcb1 python36 python36-devel python36-setuptools python36-wheel python36-pip python36-olefile python37 python37-devel python37-setuptools python37-wheel python37-pip python37-olefile python38 python38-devel python38-setuptools python38-wheel python38-pip python38-olefile python39 python39-devel python39-setuptools python39-wheel python39-pip python39-olefile"
 
 DIFF_EXCLUDES="build"
 
@@ -33,6 +33,7 @@ src_test() {
 PKG_NAMES=" python36-imaging python36-imaging-tk"
 PKG_NAMES+=" python37-imaging python37-imaging-tk"
 PKG_NAMES+=" python38-imaging python38-imaging-tk"
+PKG_NAMES+=" python39-imaging python39-imaging-tk"
 
 # ImageQt no longer imports PyQt or PySide, but simply integrates with
 # whatever has already been imported.  Therefore there is no need to
@@ -83,6 +84,21 @@ python38_imaging_tk_CONTENTS="
 	usr/lib/python3.8/site-packages/PIL/SpiderImagePlugin*
 	usr/lib/python3.8/site-packages/PIL/__pycache__/ImageTk*
 	usr/lib/python3.8/site-packages/PIL/__pycache__/SpiderImagePlugin*
+"
+python39_imaging_REQUIRES="python39 python39-olefile"
+python39_imaging_CONTENTS="
+	--exclude=_imagingtk*
+	--exclude=ImageTk*
+	--exclude=SpiderImagePlugin*
+	${python39_imaging_CONTENTS}
+"
+python39_imaging_tk_REQUIRES="python39-imaging python39-tkinter"
+python39_imaging_tk_CONTENTS="
+	usr/lib/python3.9/site-packages/PIL/_imagingtk*
+	usr/lib/python3.9/site-packages/PIL/ImageTk*
+	usr/lib/python3.9/site-packages/PIL/SpiderImagePlugin*
+	usr/lib/python3.9/site-packages/PIL/__pycache__/ImageTk*
+	usr/lib/python3.9/site-packages/PIL/__pycache__/SpiderImagePlugin*
 "
 python_imaging_debuginfo_OBSOLETES="python3-imaging-debuginfo"
 PKG_IGNORE="usr/share/doc/python*-imaging-*/"
